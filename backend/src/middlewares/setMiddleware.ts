@@ -4,8 +4,8 @@ import { secureHeadersMiddleware } from "./secureHeadersMiddleware";
 
 const middlewares = [
   {path: '/*' , func: corsMiddleware},
-  {path: '/*', func: secureHeadersMiddleware},
-  {path: '/*', func: requestLoggerMiddleware},
+  {path: '/*', func: secureHeadersMiddleware()},
+  {path: '/*', func: requestLoggerMiddleware()},
 ]
 
 // ミドルウェアを設定する

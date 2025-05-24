@@ -10,23 +10,12 @@ function requestLoggerMiddleware() {
         c.set('requestTime', requestTimeStamp);
         c.set('requestId', requestId);
         // リクエスト情報をログに出力
-        console.log(`
-            ${requestTimeStamp} 
-            [${requestId}] →
-            ${c.req.method} 
-            ${c.req.url}
-        `);
+        console.log(`${requestTimeStamp} [${requestId}] → ${c.req.method} ${c.req.url}`);
 
         await next();
         // レスポンス情報をログに出力
         const duration = Date.now() - new Date(requestTimeStamp).getTime();
-        console.log(`
-            ${requestTimeStamp} 
-            [${requestId}] ←
-            ${c.req.method} 
-            ${c.req.url}
-            ${c.res.status} 
-            ${duration}ms
+        console.log(`${requestTimeStamp} [${requestId}] ← ${c.req.method} ${c.req.url} ${c.res.status} ${duration}ms
         `);
     })
 }

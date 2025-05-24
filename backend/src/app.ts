@@ -1,17 +1,20 @@
 import { Hono } from "hono";
 import { setMiddlewares } from "./middlewares/setMiddleware";
+import setupErrorHandling from "./middlewares/setupErrorHandling";
 
-// アプリケーションを設定し作成する
+// Appオブジェクトを作成
 function createApp() {
     const app = new Hono();
     setMiddlewares(app);
-    // エラーハンドリングの設定をする関数を呼ぶ
+    setupErrorHandling(app);
     
     // ルーティングの設定をする関数を呼ぶ
     // 動作確認用API
-    app.get("/helth", (c) => {
+    app.get("/health", (c) => {
         return c.json({ status: "ok" });
     });
 
   return app
 }
+
+export default createApp;
