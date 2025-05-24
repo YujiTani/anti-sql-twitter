@@ -1,0 +1,13 @@
+{
+  "references": [
+    {
+      "path": "./backend"
+    },
+    {
+      "path": "./frontend"
+    }
+  ],
+  "compilerOptions": {
+    "composite": true
+  }
+}
