@@ -1,0 +1,16 @@
+{
+  "scripts": {
+    "format": "bun run --bun biome format --write .",
+    "format:check": "bun run --bun biome format .",
+    "lint": "bun run --bun biome lint .",
+    "lint:fix": "bun run --bun biome lint --write .",
+    "check": "bun run --bun biome check .",
+    "check:fix": "bun run --bun biome check --write ."
+  },
+  "dependencies": {
+    "biome": "^0.3.3"
+  },
+  "devDependencies": {
+    "@biomejs/biome": "1.9.4"
+  }
+}
