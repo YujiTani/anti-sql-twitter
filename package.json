@@ -5,10 +5,13 @@
     "lint": "bun run --bun biome lint .",
     "lint:fix": "bun run --bun biome lint --write .",
     "check": "bun run --bun biome check .",
-    "check:fix": "bun run --bun biome check --write ."
+    "check:fix": "bun run --bun biome check --write .",
+    "prepare": "husky"
   },
   "dependencies": {
-    "biome": "^0.3.3"
+    "biome": "^0.3.3",
+    "husky": "^9.1.7",
+    "lint-staged": "^16.0.0"
   },
   "devDependencies": {
     "@biomejs/biome": "1.9.4"
