@@ -1,19 +1,16 @@
 {
   "compilerOptions": {
-    // 共通のコンパイル設定
     "target": "ES2024",
     "lib": ["ES2024"],
     "allowSyntheticDefaultImports": true,
     "strict": true,
-    "forceConsistentCasingInFileNames": true, // 大文字小文字を区別する
+    "forceConsistentCasingInFileNames": true,
     "noFallthroughCasesInSwitch": true,
     "noEmit": false,
-    "exactOptionalPropertyTypes": true, // オプションの型を厳密にチェック
-    "esModuleInterop": true, // ESモジュールとCommonJSモジュールの互換性を持たせる
-    "skipLibCheck": true, // ライブラリの型チェックをスキップ
-    "allowJs" : true, // JavaScriptファイルをコンパイル対象にする
-    
-    // 型チェック設定
+    "exactOptionalPropertyTypes": true,
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+    "allowJs" : true,
     "noImplicitAny": true,
     "strictNullChecks": true,
     "strictFunctionTypes": true,
@@ -21,8 +18,6 @@
     "noImplicitThis": true,
     "noUnusedLocals": false,
     "noUnusedParameters": false,
-    
-    // その他
     "resolveJsonModule": true,
     "isolatedModules": true,
     "useDefineForClassFields": true
