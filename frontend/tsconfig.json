@@ -13,7 +13,8 @@
     "paths": {
       "@/*": ["./src/*"],
       "@tests/*": ["./tests/*"]
-    }
+    },
+    "composite": true
   },
   "include": ["src"],
   "exclude": ["node_modules", "tailwind.config.ts", "vite.config.ts"]
