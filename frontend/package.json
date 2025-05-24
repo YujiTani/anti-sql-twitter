@@ -1,0 +1,68 @@
+{
+  "name": "ecoquest",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "bun run --bun vite",
+    "build": "bun run --bun tsc -b && bun run --bun vite build",
+    "lint": "eslint .",
+    "format": "prettier . --write",
+    "check-types": "tsc --pretty --noEmit",
+    "preview": "vite preview",
+    "prepare": "husky",
+    "start": "NODE_ENV=production vite preview --host 0.0.0.0 --port ${PORT:-5173}"
+  },
+  "dependencies": {
+    "@supabase/auth-ui-react": "^0.4.7",
+    "@supabase/auth-ui-shared": "^0.1.8",
+    "@supabase/supabase-js": "^2.49.4",
+    "@tailwindcss/vite": "^4.1.7",
+    "@tanstack/react-query": "^5.76.1",
+    "@testing-library/react": "^16.3.0",
+    "axios": "^1.9.0",
+    "husky": "^9.1.7",
+    "jotai": "^2.12.4",
+    "lint-staged": "^16.0.0",
+    "lucide-react": "^0.511.0",
+    "prettier": "^3.5.3",
+    "prettier-plugin-tailwindcss": "^0.6.11",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "react-error-boundary": "^6.0.0",
+    "react-helmet-async": "^2.0.5",
+    "react-router-dom": "^6.22.3",
+    "tailwindcss": "^4.1.7",
+    "uuid": "^11.1.0"
+  },
+  "devDependencies": {
+    "@eslint/js": "^9.25.0",
+    "@happy-dom/global-registrator": "^17.4.7",
+    "@testing-library/dom": "^10.4.0",
+    "@testing-library/jest-dom": "^6.6.3",
+    "@types/bun": "^1.2.13",
+    "@types/react": "^18.2.0",
+    "@types/react-dom": "^18.2.0",
+    "@types/web": "^0.0.235",
+    "@vitejs/plugin-react": "^4.4.1",
+    "eslint": "^9.25.0",
+    "eslint-plugin-react-hooks": "^5.2.0",
+    "eslint-plugin-react-refresh": "^0.4.19",
+    "globals": "^16.0.0",
+    "typescript": "~5.8.3",
+    "typescript-eslint": "^8.30.1",
+    "vite": "^6.3.5",
+    "vitest": "^3.1.3"
+  },
+  "lint-staged": {
+    "*.{ts,tsx}": [
+      "eslint --max-warnings=0",
+      "bash -c 'bun run check-types'"
+    ]
+  },
+  "bun": {
+    "test": {
+      "environment": "jsdom"
+    }
+  }
+}
