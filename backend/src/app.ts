@@ -8,7 +8,10 @@ function createApp() {
     // エラーハンドリングの設定をする関数を呼ぶ
     
     // ルーティングの設定をする関数を呼ぶ
-  // app.route('/api', apiRouter)
+    // 動作確認用API
+    app.get("/helth", (c) => {
+        return c.json({ status: "ok" });
+    });
 
   return app
 }
