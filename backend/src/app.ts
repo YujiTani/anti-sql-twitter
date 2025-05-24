@@ -1,12 +1,12 @@
 import { Hono } from "hono";
 import { setMiddlewares } from "./middlewares/setMiddleware";
-import setupErrorHandling from "./middlewares/setupErrorHandling";
+import setErrorHandling from "./middlewares/setErrorHandling";
 
 // Appオブジェクトを作成
 function createApp() {
     const app = new Hono();
     setMiddlewares(app);
-    setupErrorHandling(app);
+    setErrorHandling(app);
     
     // ルーティングの設定をする関数を呼ぶ
     // 動作確認用API

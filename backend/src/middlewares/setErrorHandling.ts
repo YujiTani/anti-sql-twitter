@@ -2,7 +2,7 @@ import { Context, Hono } from "hono"
 import { nanoid } from "nanoid";
 
 // グローバルエラーハンドリング設定
-const setupErrorHandling = (app: Hono) => {
+const setErrorHandling = (app: Hono) => {
     // グローバルエラーハンドラー
     app.onError((err, c: Context) => {
       const requestId = c.get('requestId') || nanoid();
@@ -28,4 +28,4 @@ const setupErrorHandling = (app: Hono) => {
     })
   }
 
-export default setupErrorHandling;
+export default setErrorHandling;
