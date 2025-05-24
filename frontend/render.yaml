@@ -1,6 +1,6 @@
 services:
   - type: web
-    name: eco-quest
+    name: sql-anti-twitter
     runtime: node
     buildCommand: npm install && npm run build
     startCommand: npm run start

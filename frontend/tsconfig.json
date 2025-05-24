@@ -2,10 +2,10 @@
   "compilerOptions": {
     "target": "ESNext",
     "lib": ["dom", "dom.iterable", "esnext"],
-    "module": "esnext",
+    "module": "nodenext",
     "jsx": "react-jsx",
     "allowJs": true,
-    "moduleResolution": "bundler",
+    "moduleResolution": "nodenext",
     "resolveJsonModule": true,
     "types": ["vite/client", "vitest/globals", "bun-types"],
     "isolatedModules": true,

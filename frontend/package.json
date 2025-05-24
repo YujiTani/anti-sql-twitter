@@ -6,10 +6,8 @@
   "scripts": {
     "dev": "bun run --bun vite",
     "build": "bun run --bun tsc -b && bun run --bun vite build",
-    "lint": "eslint .",
-    "format": "prettier . --write",
     "check-types": "tsc --pretty --noEmit",
-    "preview": "vite preview",
+    "preview": "bun run --bun vite preview",
     "prepare": "husky",
     "start": "NODE_ENV=production vite preview --host 0.0.0.0 --port ${PORT:-5173}"
   },
