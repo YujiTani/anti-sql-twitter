@@ -2,13 +2,13 @@
   "compilerOptions": {
     "target": "ESNext",
     "lib": ["dom", "dom.iterable", "esnext"],
-    "module": "nodenext",
     "jsx": "react-jsx",
     "allowJs": true,
-    "moduleResolution": "nodenext",
+    "module": "esnext",
+    "moduleResolution": "bundler",
     "resolveJsonModule": true,
-    "types": ["vite/client", "vitest/globals", "bun-types"],
     "isolatedModules": true,
+    "types": ["vite/client", "vitest/globals", "bun-types"],
     "baseUrl": ".",
     "paths": {
       "@/*": ["./src/*"],
