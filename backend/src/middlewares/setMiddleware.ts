@@ -3,7 +3,7 @@ import requestLoggerMiddleware from "./requestLoggerMiddleware";
 import { secureHeadersMiddleware } from "./secureHeadersMiddleware";
 
 const middlewares = [
-  {path: '/*' , func: corsMiddleware},
+  {path: '/*', func: corsMiddleware()},
   {path: '/*', func: secureHeadersMiddleware()},
   {path: '/*', func: requestLoggerMiddleware()},
 ]
