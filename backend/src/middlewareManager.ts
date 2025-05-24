@@ -12,5 +12,9 @@ function middlewareManager() {
         maxAge: 600,
         // 認証情報（Cookie、Authorization header）の送信を許可
         credentials: process.env.NODE_ENV === 'production',
-      })
+      }))
+
+    return middowres;
 }
+
+export default middlewareManager;
