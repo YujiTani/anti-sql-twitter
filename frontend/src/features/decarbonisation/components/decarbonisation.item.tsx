@@ -1,76 +1,76 @@
-import { useLongPress } from '@/hooks/useLongClick';
-import { IconNames, ICONS } from '../constants';
-import { useRef, useState } from 'react';
-import ConfirmDialog from '@/components/ui/dialogs/confirmDialog';
-import { useDecarbonisationStore } from '../api/decarbonisation.store';
-import CircleLoader from '@/components/ui/circles/circleLoader';
+import CircleLoader from '@/components/ui/circles/circleLoader'
+import ConfirmDialog from '@/components/ui/dialogs/confirmDialog'
+import { useLongPress } from '@/hooks/useLongClick'
+import { useRef, useState } from 'react'
+import { useDecarbonisationStore } from '../api/decarbonisation.store'
+import { ICONS, IconNames } from '../constants'
 
 export type Decarbonisation = {
-  id: number;
-  uuid: string;
-  name: string;
-  description: string;
-  icon: IconNames;
-  image?: string;
-  state: string;
-  achievements: Achievement[];
-};
+  id: number
+  uuid: string
+  name: string
+  description: string
+  icon: IconNames
+  image?: string
+  state: string
+  achievements: Achievement[]
+}
 
 export type Achievement = {
-  id?: number;
-  user_id?: string;
-  decarbonisation_id?: string;
+  id?: number
+  user_id?: string
+  decarbonisation_id?: string
 }
 
 type DecarbonisationProps = {
-  item: Decarbonisation;
-  onAchieve?: (uuid: string) => void;
-};
+  item: Decarbonisation
+  onAchieve?: (uuid: string) => void
+}
 
 /**
  * 脱炭素アクションアイテム
  */
 function DecarbonisationItem({ item, onAchieve }: DecarbonisationProps) {
-  const itemRef = useRef<HTMLDivElement>(null);
-  const icon = ICONS[item.icon] || ICONS.ToyBrick;
-  const [OpenDialog, setOpenDialog] = useState(false);
+  const itemRef = useRef<HTMLDivElement>(null)
+  const icon = ICONS[item.icon] || ICONS.ToyBrick
+  const [OpenDialog, setOpenDialog] = useState(false)
   const { hasDecarbonisation, addDecarbonisation, removeDecarbonisation } =
-    useDecarbonisationStore();
-  const pressMilliseconds = 800;
-  const isSelected = hasDecarbonisation(item.uuid);
+    useDecarbonisationStore()
+  const pressMilliseconds = 800
+  const isSelected = hasDecarbonisation(item.uuid)
 
   function showDialog() {
-    const itemElement = itemRef.current;
+    const itemElement = itemRef.current
     if (!itemElement) {
-      return;
+      return
     }
-    setOpenDialog(true);
+    setOpenDialog(true)
   }
 
   function handleClick() {
-    const itemElement = itemRef.current;
-    const uuid = itemElement?.getAttribute('data-id');
+    const itemElement = itemRef.current
+    const uuid = itemElement?.getAttribute('data-id')
 
     if (!itemElement || !uuid) {
-      return;
+      return
     }
 
     if (!hasDecarbonisation(uuid)) {
-      addDecarbonisation(item);
+      addDecarbonisation(item)
     } else {
-      removeDecarbonisation(uuid);
+      removeDecarbonisation(uuid)
     }
   }
 
-  const handleLongPress = useLongPress(showDialog, pressMilliseconds);
+  const handleLongPress = useLongPress(showDialog, pressMilliseconds)
 
   function handleConfirm() {
     if (onAchieve) {
-      onAchieve(item.uuid);
+      onAchieve(item.uuid)
     }
   }
 
-  const borderStyle = isSelected ? 'border-blue-400' : 'border-gray-200';
+  const borderStyle = isSelected ? 'border-blue-400' : 'border-gray-200'
 
   return (
     <div
@@ -90,9 +90,7 @@ function DecarbonisationItem({ item, onAchieve }: DecarbonisationProps) {
       </div>
       <div className="p-5">
         <div className="mb-3 flex items-center">
-          <div className="mr-3 rotate-12 transform rounded-full bg-white p-2 shadow-sm">
-            {icon}
-          </div>
+          <div className="mr-3 rotate-12 transform rounded-full bg-white p-2 shadow-sm">{icon}</div>
           <h3 className="text-lg font-bold text-green-700">{item.name}</h3>
         </div>
         <p className="text-sm text-gray-600">{item.description}</p>
@@ -116,7 +114,7 @@ function DecarbonisationItem({ item, onAchieve }: DecarbonisationProps) {
         item={item}
       />
     </div>
-  );
+  )
 }
 
-export default DecarbonisationItem;
+export default DecarbonisationItem

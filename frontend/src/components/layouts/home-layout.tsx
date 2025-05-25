@@ -1,7 +1,7 @@
-import Head from '@/components/seo/head';
-import { Outlet } from 'react-router-dom';
-import { BaseLayoutProps } from './base-layout';
-import Header from '../ui/headers/components/header';
+import Head from '@/components/seo/head'
+import { Outlet } from 'react-router-dom'
+import Header from '../ui/headers/components/header'
+import { BaseLayoutProps } from './base-layout'
 
 function HomeLayout({ title = 'Home | Eco Quest' }: BaseLayoutProps) {
   return (
@@ -16,7 +16,7 @@ function HomeLayout({ title = 'Home | Eco Quest' }: BaseLayoutProps) {
         </div>
       </div>
     </>
-  );
+  )
 }
 
-export default HomeLayout;
+export default HomeLayout

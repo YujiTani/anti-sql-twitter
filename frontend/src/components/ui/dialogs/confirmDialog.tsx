@@ -1,19 +1,19 @@
-import { useDecarbonisationStore } from '@/features/decarbonisation/api/decarbonisation.store';
-import { useRef, useEffect } from 'react';
+import { useDecarbonisationStore } from '@/features/decarbonisation/api/decarbonisation.store'
+import { useEffect, useRef } from 'react'
 
 export type ConfirmDialogProps = {
-  isOpen: boolean;
-  onClose: () => void;
-  onConfirm: () => void;
-  title: string;
-  message: string;
-  confirmText?: string;
-  cancelText?: string;
+  isOpen: boolean
+  onClose: () => void
+  onConfirm: () => void
+  title: string
+  message: string
+  confirmText?: string
+  cancelText?: string
   item?: {
-    name: string;
-    image?: string;
-  };
-};
+    name: string
+    image?: string
+  }
+}
 
 function ConfirmDialog({
   isOpen,
@@ -25,39 +25,39 @@ function ConfirmDialog({
   cancelText = 'キャンセル',
   item,
 }: ConfirmDialogProps) {
-  const dialogRef = useRef<HTMLDialogElement>(null);
-  const {decarbonisations} = useDecarbonisationStore()
+  const dialogRef = useRef<HTMLDialogElement>(null)
+  const { decarbonisations } = useDecarbonisationStore()
 
   useEffect(() => {
-    const dialog = dialogRef.current;
-    if (!dialog) return;
+    const dialog = dialogRef.current
+    if (!dialog) return
 
     if (isOpen) {
       if (!dialog.open) {
-        dialog.showModal();
+        dialog.showModal()
       }
     } else {
       if (dialog.open) {
-        dialog.close();
+        dialog.close()
       }
     }
-  }, [isOpen]);
+  }, [isOpen])
 
   // キャンセル時の処理（ESCキーやダイアログ外クリックも含む）
   useEffect(() => {
-    const dialog = dialogRef.current;
-    if (!dialog) return;
+    const dialog = dialogRef.current
+    if (!dialog) return
 
     const handleCancel = (event: Event) => {
-      event.preventDefault();
-      onClose();
-    };
+      event.preventDefault()
+      onClose()
+    }
 
-    dialog.addEventListener('cancel', handleCancel);
+    dialog.addEventListener('cancel', handleCancel)
     return () => {
-      dialog.removeEventListener('cancel', handleCancel);
-    };
-  }, [onClose]);
+      dialog.removeEventListener('cancel', handleCancel)
+    }
+  }, [onClose])
 
   return (
     <dialog
@@ -67,7 +67,7 @@ function ConfirmDialog({
         // ダイアログ内部をクリックした場合は何もしない
         // ダイアログ自体（backdrop部分）をクリックした場合は閉じる
         if (e.target === dialogRef.current) {
-          onClose();
+          onClose()
         }
       }}
     >
@@ -78,22 +78,22 @@ function ConfirmDialog({
 
         <div className="bg-white p-6">
           <div className="mb-4 flex justify-center flex-wrap gap-1.5">
-          {decarbonisations.length > 0 && decarbonisations.map((decarbonisation) => (
-            decarbonisation.image && (
-              <img
-                key={decarbonisation.uuid}
-                src={decarbonisation.image}
-                alt={decarbonisation.name}
-                className="h-32 w-32 rounded-lg object-cover"
-              />
-            )
-          ))}
-            </div>
+            {decarbonisations.length > 0 &&
+              decarbonisations.map(
+                (decarbonisation) =>
+                  decarbonisation.image && (
+                    <img
+                      key={decarbonisation.uuid}
+                      src={decarbonisation.image}
+                      alt={decarbonisation.name}
+                      className="h-32 w-32 rounded-lg object-cover"
+                    />
+                  ),
+              )}
+          </div>
 
           {item && (
-            <h4 className="mb-2 text-center text-lg font-bold text-gray-800">
-              {item.name}
-            </h4>
+            <h4 className="mb-2 text-center text-lg font-bold text-gray-800">{item.name}</h4>
           )}
 
           <p className="text-gray-600">{message}</p>
@@ -112,8 +112,8 @@ function ConfirmDialog({
             type="button"
             className="rounded-md bg-green-600 px-4 py-2 text-white hover:bg-green-700"
             onClick={() => {
-              onConfirm();
-              onClose();
+              onConfirm()
+              onClose()
             }}
           >
             {confirmText}
@@ -121,7 +121,7 @@ function ConfirmDialog({
         </div>
       </div>
     </dialog>
-  );
+  )
 }
 
-export default ConfirmDialog;
+export default ConfirmDialog

@@ -1,5 +1,5 @@
-import QuestPoint from './quest-point';
-import User from './user';
+import QuestPoint from './quest-point'
+import User from './user'
 
 function Header() {
   return (
@@ -15,7 +15,7 @@ function Header() {
         </div>
       </div>
     </header>
-  );
+  )
 }
 
-export default Header;
+export default Header

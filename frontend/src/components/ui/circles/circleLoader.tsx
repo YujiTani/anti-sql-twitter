@@ -1,13 +1,13 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react'
 
 type CircleLoaderProps = {
-  width?: number;
-  height?: number;
-  milliseconds?: number;
-  infinite?: boolean;
-  followCursor?: boolean;
-  isPressed?: boolean;
-};
+  width?: number
+  height?: number
+  milliseconds?: number
+  infinite?: boolean
+  followCursor?: boolean
+  isPressed?: boolean
+}
 
 function CircleLoader({
   width = 400,
@@ -17,14 +17,14 @@ function CircleLoader({
   followCursor = false,
   isPressed = false,
 }: CircleLoaderProps) {
-  const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
-  const animationDuration = milliseconds / 1000;
-  const iterationCount = infinite ? 'infinite' : '1';
-  const fillMode = infinite ? 'none' : 'forwards';
+  const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 })
+  const animationDuration = milliseconds / 1000
+  const iterationCount = infinite ? 'infinite' : '1'
+  const fillMode = infinite ? 'none' : 'forwards'
   const circleAnimationStyle = {
     animation: `drawCircle ${animationDuration}s ${iterationCount} linear`,
     animationFillMode: fillMode,
-  };
+  }
 
   const containerStyle: React.CSSProperties = followCursor
     ? {
@@ -37,38 +37,31 @@ function CircleLoader({
         opacity: isPressed ? 1 : 0, // isPressedがtrueの場合のみ表示
         transition: 'opacity 0.1s ease',
       }
-    : {};
+    : {}
 
   useEffect(() => {
-    if (!followCursor) return;
+    if (!followCursor) return
 
     // マウス移動イベントのハンドラー
     const handleMouseMove = (event: MouseEvent) => {
-      setMousePosition({ x: event.clientX, y: event.clientY });
-    };
+      setMousePosition({ x: event.clientX, y: event.clientY })
+    }
 
     // イベントリスナーの登録
-    document.addEventListener('mousemove', handleMouseMove);
+    document.addEventListener('mousemove', handleMouseMove)
 
     // クリーンアップ関数
     return () => {
-      document.removeEventListener('mousemove', handleMouseMove);
-    };
-  }, [followCursor]);
+      document.removeEventListener('mousemove', handleMouseMove)
+    }
+  }, [followCursor])
 
   // 表示条件：followCursorがfalseの場合は常に表示、trueの場合はisPressedに依存
-  if (followCursor && !isPressed) return null;
+  if (followCursor && !isPressed) return null
 
   const svgContent = (
     <svg width={width} height={height} viewBox="0 0 400 400">
-      <circle
-        cx={200}
-        cy={200}
-        r={150}
-        fill="none"
-        stroke="#f0f0f0"
-        strokeWidth={20}
-      />
+      <circle cx={200} cy={200} r={150} fill="none" stroke="#f0f0f0" strokeWidth={20} />
       <circle
         cx={200}
         cy={200}
@@ -95,13 +88,9 @@ function CircleLoader({
                 `}
       </style>
     </svg>
-  );
+  )
 
-  return followCursor ? (
-    <div style={containerStyle}>{svgContent}</div>
-  ) : (
-    svgContent
-  );
+  return followCursor ? <div style={containerStyle}>{svgContent}</div> : svgContent
 }
 
-export default CircleLoader;
+export default CircleLoader

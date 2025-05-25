@@ -1,10 +1,10 @@
-import Head from '@/components/seo/head';
-import { Outlet } from 'react-router-dom';
+import Head from '@/components/seo/head'
+import { Outlet } from 'react-router-dom'
 
 export type BaseLayoutProps = {
-  title?: string;
-  description?: string;
-};
+  title?: string
+  description?: string
+}
 
 function BaseLayout({
   title = 'Eco Quest',
@@ -19,7 +19,7 @@ function BaseLayout({
         </main>
       </div>
     </>
-  );
+  )
 }
 
-export default BaseLayout;
+export default BaseLayout

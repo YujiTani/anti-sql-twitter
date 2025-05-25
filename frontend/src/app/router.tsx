@@ -1,16 +1,16 @@
-import { Route, Routes } from 'react-router-dom';
-import { Suspense } from 'react';
-import { lazy } from 'react';
-import { ErrorBoundary } from 'react-error-boundary';
-import MainErrorFallback from '@/components/errors/main';
-import { HelmetProvider } from 'react-helmet-async';
-import BaseLayout from '@/components/layouts/base-layout';
-import HomeLayout from '@/components/layouts/home-layout';
-import Notifications from '@/components/ui/notifications/components/notifications';
+import MainErrorFallback from '@/components/errors/main'
+import BaseLayout from '@/components/layouts/base-layout'
+import HomeLayout from '@/components/layouts/home-layout'
+import Notifications from '@/components/ui/notifications/components/notifications'
+import { Suspense } from 'react'
+import { lazy } from 'react'
+import { ErrorBoundary } from 'react-error-boundary'
+import { HelmetProvider } from 'react-helmet-async'
+import { Route, Routes } from 'react-router-dom'
 
-const LoginPage = lazy(() => import('@/features/auth/components/Login'));
-const HomePage = lazy(() => import('@/pages/Home'));
-const NotFoundPage = lazy(() => import('@/pages/NotFound'));
+const LoginPage = lazy(() => import('@/features/auth/components/Login'))
+const HomePage = lazy(() => import('@/pages/Home'))
+const NotFoundPage = lazy(() => import('@/pages/NotFound'))
 
 function Router() {
   return (
@@ -32,7 +32,7 @@ function Router() {
         </ErrorBoundary>
       </Suspense>
     </div>
-  );
+  )
 }
 
-export default Router;
+export default Router

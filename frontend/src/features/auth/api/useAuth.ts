@@ -1,6 +1,6 @@
-import { useSuspenseQuery } from '@tanstack/react-query';
-import { getSession, getUser } from './auth.repository';
-import { useUserStore } from './user.store';
+import { useSuspenseQuery } from '@tanstack/react-query'
+import { getSession, getUser } from './auth.repository'
+import { useUserStore } from './user.store'
 
 /**
  * セッション情報を取得
@@ -10,11 +10,11 @@ export function useAuth() {
   const sessionQuery = useSuspenseQuery({
     queryFn: getSession,
     queryKey: ['auth', 'session'],
-  });
+  })
 
   return {
     session: sessionQuery.data,
-  };
+  }
 }
 
 /**
@@ -22,14 +22,14 @@ export function useAuth() {
  * @returns ユーザー
  */
 export function useUser() {
-  const { setUser } = useUserStore();
-  const {data} = useSuspenseQuery({
+  const { setUser } = useUserStore()
+  const { data } = useSuspenseQuery({
     queryFn: getUser,
     queryKey: ['user'],
-  });
+  })
 
-  setUser(data);
+  setUser(data)
   return {
-    user: data
+    user: data,
   }
 }
