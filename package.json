@@ -1,4 +1,9 @@
 {
+  "dependencies": {
+    "husky": "^9.1.7",
+    "lint-staged": "^16.0.0",
+    "nanoid": "^5.1.5"
+  },
   "scripts": {
     "format": "bunx --bun @biomejs/biome format --write .",
     "format:check": "bunx --bun @biomejs/biome format .",
@@ -7,11 +12,6 @@
     "check": "bunx --bun @biomejs/biome check .",
     "check:fix": "bunx --bun @biomejs/biome check --write .",
     "prepare": "husky"
-  },
-  "dependencies": {
-    "husky": "^9.1.7",
-    "lint-staged": "^16.0.0",
-    "nanoid": "^5.1.5"
   },
   "devDependencies": {
     "@biomejs/biome": "1.9.4"
