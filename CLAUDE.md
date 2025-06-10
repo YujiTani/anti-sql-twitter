@@ -1,0 +1,92 @@
+# CLAUDE.md
+
+このファイルは、Claude Code (claude.ai/code) がこのリポジトリで作業する際のガイダンスを提供します。
+
+**重要**: このプロジェクトでは必ず日本語で回答してください。
+
+## プロジェクト構成
+
+フロントエンド（React/Vite）とバックエンド（Hono）からなるフルスタックアプリケーションです：
+
+- **フロントエンド**: `/frontend/` にある React + TypeScript + Vite アプリケーション
+- **バックエンド**: `/backend/` にある Hono API サーバー
+- **パッケージ管理**: すべてのパッケージ管理とスクリプト実行に Bun を使用
+- **コード品質**: モノレポ全体の フォーマット・リント に Biome を使用
+
+## 開発コマンド
+
+### ルートレベル（モノレポ）
+```bash
+# プロジェクト全体のコードフォーマット
+bun run format
+
+# フォーマットチェック
+bun run format:check  
+
+# コードリント
+bun run lint
+
+# リント問題の自動修正
+bun run lint:fix
+
+# フォーマット・リント両方のチェックと修正
+bun run check:fix
+```
+
+### フロントエンド開発
+```bash
+cd frontend
+
+# 開発サーバー起動
+bun run dev
+
+# 本番用ビルド
+bun run build
+
+# 型チェック
+bun run check-types
+
+# 本番プレビュー起動
+bun run start
+```
+
+### バックエンド開発
+```bash
+cd backend
+
+# ホットリロード付き開発サーバー起動
+bun run dev
+
+# TypeScript ビルド
+bun run build
+
+# 本番サーバー起動
+bun run start
+
+# テスト実行
+bun run test
+```
+
+## アーキテクチャ概要
+
+### フロントエンドアーキテクチャ
+- **状態管理**: Jotai（アトミック状態管理）、TanStack Query（サーバー状態管理）
+- **認証**: `/features/auth/` にカスタムコンポーネントを持つ Supabase Auth
+- **ルーティング**: `/components/layouts/` のレイアウトコンポーネントを使った React Router
+- **UI コンポーネント**: Tailwind CSS スタイリングによる `/components/ui/` のカスタムコンポーネント
+- **API 統合**: `/api/api-client.ts` の一元化された API クライアント
+
+### バックエンドアーキテクチャ
+- **フレームワーク**: ミドルウェアパターンによる Hono Web フレームワーク
+- **ミドルウェア**: CORS、ログ、セキュリティヘッダーを含む `/middlewares/` に整理
+- **アプリケーションファクトリー**: `app.ts` の `createApp()` 関数でアプリ設定を一元化
+
+### 主要な統合機能
+- **データベース**: Supabase（環境変数 VITE_SUPABASE_URL、VITE_SUPABASE_ANON_KEY で設定）
+- **デプロイメント**: バックエンドは Dockerfile、フロントエンドは Render デプロイメント用に設定
+
+## コード品質基準
+
+- **Biome 設定**: 100文字行幅での厳格な TypeScript ルール
+- **プリコミットフック**: 自動フォーマット・リント用の Husky + lint-staged
+- **テスト**: フロントエンドは HappyDOM 付き Vitest、バックエンドは Bun test
