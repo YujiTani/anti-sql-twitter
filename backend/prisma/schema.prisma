@@ -1,7 +1,8 @@
 // SQLパフォーマンス学習用の意図的に非効率なスキーマ設計
 
 generator client {
-  provider = "prisma-client-js"
+  provider        = "prisma-client-js"
+  previewFeatures = ["typedSql"]
 }
 
 datasource db {
