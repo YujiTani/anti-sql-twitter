@@ -152,6 +152,38 @@ Internet (HTTPS:443)
 - 詳細なアクセス制限
 - PostgreSQL SSL/TLS強制
 
+## 環境変数設定
+
+### ローカル開発環境
+```bash
+# バックエンドディレクトリで実行
+cd backend
+cp .env.sample .env.local
+```
+
+### 必須環境変数
+
+#### ORIGIN (CORS設定)
+```bash
+# 開発環境
+ORIGIN=http://localhost:3001
+
+# 本番環境  
+ORIGIN=https://your-domain.com
+```
+
+- **用途**: CORS（Cross-Origin Resource Sharing）設定
+- **設定しない場合**: エラーでアプリケーション停止
+- **セキュリティ**: 必須設定。具体的なドメインを指定してセキュリティを確保
+
+### オプション環境変数
+
+#### PORT (サーバーポート)
+```bash
+# デフォルト: 3000
+PORT=3000
+```
+
 ## 次のステップ
 
 Phase 1の構築から始めて、動作確認後に段階的にスケールアップしていきます。
