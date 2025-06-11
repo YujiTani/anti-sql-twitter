@@ -14,7 +14,7 @@
     "prepare": "husky"
   },
   "lint-staged": {
-    "*.{ts,tsx,js,jsx,json,css,md}": [
+    "*.{ts,tsx,js,jsx,json,css}": [
       "bunx --bun @biomejs/biome format --write",
       "bunx --bun @biomejs/biome lint --write"
     ]
