@@ -1,10 +1,10 @@
 import { serve } from '@hono/node-server'
-import createApp from './app'
+import createApp from './app.js'
 
 // appを作成し、サーバーを起動する
 function main() {
   const app = createApp()
-  const port = process.env.PORT || 3000
+  const port = process.env.PORT || 80
 
   serve(
     {
@@ -18,7 +18,7 @@ function main() {
 }
 
 // 直接実行された場合のみサーバーを起動
-if (require.main === module) {
+if (import.meta.main) {
   main()
 }
 

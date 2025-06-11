@@ -1,0 +1,101 @@
+# Phase 1: 基本構成 (3コンテナ)
+# CPU負荷を抑えたシンプルな構成でローカル開発環境を構築
+
+services:
+  # Nginx リバースプロキシ
+  nginx:
+    image: nginx:alpine
+    container_name: anti-sql-twitter-nginx
+    ports:
+      - "80:80"
+    volumes:
+      - ./nginx/nginx.conf:/etc/nginx/nginx.conf:ro
+    depends_on:
+      - frontend
+      - backend
+    networks:
+      app-network:
+        ipv4_address: 172.20.0.10
+    deploy:
+      resources:
+        limits:
+          cpus: '0.1'
+          memory: 64M
+    restart: unless-stopped
+
+  # Frontend (React + Vite)
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: anti-sql-twitter-frontend
+    expose:
+      - "80"
+    environment:
+      - NODE_ENV=production
+    networks:
+      app-network:
+        ipv4_address: 172.20.0.11
+    deploy:
+      resources:
+        limits:
+          cpus: '0.3'
+          memory: 256M
+    restart: unless-stopped
+
+  # Backend (Hono API)
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: anti-sql-twitter-backend
+    expose:
+      - "80"
+    environment:
+      - ORIGIN=http://localhost
+      - NODE_ENV=production
+    networks:
+      app-network:
+        ipv4_address: 172.20.0.12
+    deploy:
+      resources:
+        limits:
+          cpus: '0.5'
+          memory: 512M
+    restart: unless-stopped
+
+  # PostgreSQL Database (Phase 2で追加予定)
+  # postgres:
+  #   image: postgres:15-alpine
+  #   container_name: anti-sql-twitter-postgres
+  #   expose:
+  #     - "5432"
+  #   environment:
+  #     - POSTGRES_DB=anti_sql_twitter
+  #     - POSTGRES_USER=anti_sql_user
+  #     - POSTGRES_PASSWORD=anti_sql_password
+  #   volumes:
+  #     - postgres_data:/var/lib/postgresql/data
+  #     - ./postgres/init:/docker-entrypoint-initdb.d
+  #   networks:
+  #     app-network:
+  #       ipv4_address: 172.20.0.13
+  #   deploy:
+  #     resources:
+  #       limits:
+  #         cpus: '1.0'
+  #         memory: 1GB
+  #   restart: unless-stopped
+
+# ネットワーク設定
+networks:
+  app-network:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 172.20.0.0/24
+
+# ボリューム設定
+volumes:
+  postgres_data:
+    driver: local

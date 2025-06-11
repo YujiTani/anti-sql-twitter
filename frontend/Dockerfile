@@ -16,13 +16,24 @@ COPY src/ ./src/
 RUN bun run --bun vite build
 
 # === 本番ステージ ===
-FROM nginx:alpine AS production
+FROM oven/bun:alpine AS production
 
-# ビルド成果物をnginxのドキュメントルートにコピー
-COPY --from=builder /app/dist /usr/share/nginx/html
+WORKDIR /app
 
-# ポート公開
+# 本番依存関係のインストール（将来のSSR対応）
+COPY package.json ./
+RUN bun install --production
+
+# ビルド成果物をコピー
+COPY --from=builder /app/dist ./dist
+
+# 将来のSSR対応のため、package.jsonとソースも保持
+COPY --from=builder /app/package.json ./
+COPY --from=builder /app/src ./src
+
 EXPOSE 80
 
-# nginxを起動
-CMD ["nginx", "-g", "daemon off;"]
+# 現在: 静的ファイル配信（bunx serveを使用）
+# 将来: SSRサーバーに変更可能
+RUN bun add -g serve
+CMD ["serve", "-s", "dist", "-l", "80"]
