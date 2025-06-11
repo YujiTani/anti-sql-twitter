@@ -1,0 +1,177 @@
+// SQLパフォーマンス学習用の意図的に非効率なスキーマ設計
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// 管理者ユーザーテーブル（実際のアプリ利用者）
+model AdminUser {
+  id           Int       @id @default(autoincrement())
+  email        String    @unique
+  username     String    @unique
+  passwordHash String    @map("password_hash")
+  createdAt    DateTime  @default(now()) @map("created_at")
+  updatedAt    DateTime  @updatedAt @map("updated_at")
+  
+  // リレーション
+  virtualUsers VirtualUser[]
+  
+  @@map("admin_users")
+  // 意図的にインデックス不足（学習用）
+}
+
+// 仮想ユーザーテーブル（SNSで活動する仮想ユーザー）
+model VirtualUser {
+  id              Int      @id @default(autoincrement())
+  adminUserId     Int      @map("admin_user_id")
+  name            String
+  personality     String   // 'engager', 'informer', 'lurker', 'creator'
+  gender          String
+  hobbies         String   // JSON配列として格納（正規化なし：意図的）
+  activeTime      String   @map("active_time") // 'morning', 'day', 'evening', 'night'
+  activeLevel     Int      @default(5) @map("active_level") // 1-10の積極性レベル
+  createdAt       DateTime @default(now()) @map("created_at")
+  
+  // 非正規化データ（意図的なパフォーマンス問題）
+  adminUsername   String?  @map("admin_username") // admin_users.usernameの重複
+  totalTweets     Int      @default(0) @map("total_tweets")
+  totalFollowers  Int      @default(0) @map("total_followers")
+  totalFollowing  Int      @default(0) @map("total_following")
+  
+  // リレーション
+  adminUser       AdminUser @relation(fields: [adminUserId], references: [id])
+  tweets          Tweet[]
+  followers       Follow[]  @relation("Follower")
+  following       Follow[]  @relation("Following")
+  reactions       Reaction[]
+  newsReactions   NewsReaction[]
+  
+  @@map("virtual_users")
+  // 意図的にインデックス不足で検索が遅い（学習用）
+}
+
+// ツイートテーブル（意図的に非正規化した重複データを含む）
+model Tweet {
+  id               Int       @id @default(autoincrement())
+  virtualUserId    Int       @map("virtual_user_id")
+  content          String    // 300文字制限はアプリケーションレベルで制御
+  createdAt        DateTime  @default(now()) @map("created_at")
+  
+  // 非正規化データ（パフォーマンス問題誘発）
+  userName         String    @map("user_name")
+  userPersonality  String    @map("user_personality")
+  userActiveTime   String    @map("user_active_time")
+  
+  // ニュース反応関連
+  newsId           Int?      @map("news_id")
+  isNewsReaction   Boolean   @default(false) @map("is_news_reaction")
+  
+  // リツイート関連
+  originalTweetId  Int?      @map("original_tweet_id")
+  retweetComment   String?   @map("retweet_comment")
+  isRetweet        Boolean   @default(false) @map("is_retweet")
+  
+  // リレーション
+  virtualUser      VirtualUser @relation(fields: [virtualUserId], references: [id])
+  news             News?       @relation(fields: [newsId], references: [id])
+  originalTweet    Tweet?      @relation("Retweet", fields: [originalTweetId], references: [id])
+  retweets         Tweet[]     @relation("Retweet")
+  reactions        Reaction[]
+  
+  @@map("tweets")
+  // 意図的にインデックスなし：全ての検索でフルスキャン（学習用）
+}
+
+// フォロー関係テーブル（履歴込み）
+model Follow {
+  id                   Int       @id @default(autoincrement())
+  followerId           Int       @map("follower_id")
+  followingId          Int       @map("following_id")
+  followedAt           DateTime  @default(now()) @map("followed_at")
+  unfollowedAt         DateTime? @map("unfollowed_at") // NULL = 現在フォロー中
+  
+  // 非正規化データ（N+1問題誘発用）
+  followerName         String?   @map("follower_name")
+  followingName        String?   @map("following_name")
+  followerPersonality  String?   @map("follower_personality")
+  followingPersonality String?   @map("following_personality")
+  
+  // リレーション
+  follower             VirtualUser @relation("Follower", fields: [followerId], references: [id])
+  following            VirtualUser @relation("Following", fields: [followingId], references: [id])
+  
+  @@map("follows")
+  // 意図的に適切な複合インデックスなし（学習用）
+}
+
+// リアクションテーブル（いいね、リプライ）
+model Reaction {
+  id               Int       @id @default(autoincrement())
+  virtualUserId    Int       @map("virtual_user_id")
+  tweetId          Int       @map("tweet_id")
+  reactionType     String    @map("reaction_type") // 'like', 'reply'
+  content          String?   // リプライの場合のみ
+  parentReactionId Int?      @map("parent_reaction_id") // リプライツリー用
+  createdAt        DateTime  @default(now()) @map("created_at")
+  
+  // 非正規化データ（重いJOIN回避のつもりが逆効果）
+  tweetContent     String?   @map("tweet_content")
+  tweetUserName    String?   @map("tweet_user_name")
+  reactorName      String?   @map("reactor_name")
+  
+  // リレーション
+  virtualUser      VirtualUser @relation(fields: [virtualUserId], references: [id])
+  tweet            Tweet       @relation(fields: [tweetId], references: [id])
+  parentReaction   Reaction?   @relation("ReplyTree", fields: [parentReactionId], references: [id])
+  replies          Reaction[]  @relation("ReplyTree")
+  
+  @@map("reactions")
+  // 意図的にインデックス設計ミス（学習用）
+}
+
+// ニュースデータテーブル
+model News {
+  id                   Int    @id @default(autoincrement())
+  title                String
+  content              String
+  category             String
+  publishedAt          DateTime @map("published_at")
+  createdAt            DateTime @default(now()) @map("created_at")
+  
+  // 集計データの非正規化（更新コスト高）
+  totalReactions       Int    @default(0) @map("total_reactions")
+  totalTweetsGenerated Int    @default(0) @map("total_tweets_generated")
+  
+  // リレーション
+  tweets               Tweet[]
+  newsReactions        NewsReaction[]
+  
+  @@map("news")
+}
+
+// ニュース反応ログテーブル
+model NewsReaction {
+  id              Int       @id @default(autoincrement())
+  virtualUserId   Int       @map("virtual_user_id")
+  newsId          Int       @map("news_id")
+  checkedAt       DateTime  @default(now()) @map("checked_at")
+  interested      Boolean   @default(false)
+  tweeted         Boolean   @default(false)
+  tweetId         Int?      @map("tweet_id")
+  
+  // パフォーマンス分析用の重複データ
+  userPersonality String?   @map("user_personality")
+  newsCategory    String?   @map("news_category")
+  reactionScore   Int?      @map("reaction_score") // 興味度スコア
+  
+  // リレーション
+  virtualUser     VirtualUser @relation(fields: [virtualUserId], references: [id])
+  news            News        @relation(fields: [newsId], references: [id])
+  
+  @@map("news_reactions")
+}

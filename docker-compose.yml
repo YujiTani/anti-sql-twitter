@@ -1,5 +1,5 @@
-# Phase 1: 基本構成 (3コンテナ)
-# CPU負荷を抑えたシンプルな構成でローカル開発環境を構築
+# Phase 1: 基本構成 (4コンテナ)
+# PostgreSQL統合でフルスタック構成完成
 
 services:
   # Nginx リバースプロキシ
@@ -54,6 +54,9 @@ services:
     environment:
       - ORIGIN=http://localhost
       - NODE_ENV=production
+      - DATABASE_URL=postgresql://anti_sql_user:anti_sql_password@postgres:5432/anti_sql_twitter
+    depends_on:
+      - postgres
     networks:
       app-network:
         ipv4_address: 172.20.0.12
@@ -64,28 +67,27 @@ services:
           memory: 512M
     restart: unless-stopped
 
-  # PostgreSQL Database (Phase 2で追加予定)
-  # postgres:
-  #   image: postgres:15-alpine
-  #   container_name: anti-sql-twitter-postgres
-  #   expose:
-  #     - "5432"
-  #   environment:
-  #     - POSTGRES_DB=anti_sql_twitter
-  #     - POSTGRES_USER=anti_sql_user
-  #     - POSTGRES_PASSWORD=anti_sql_password
-  #   volumes:
-  #     - postgres_data:/var/lib/postgresql/data
-  #     - ./postgres/init:/docker-entrypoint-initdb.d
-  #   networks:
-  #     app-network:
-  #       ipv4_address: 172.20.0.13
-  #   deploy:
-  #     resources:
-  #       limits:
-  #         cpus: '1.0'
-  #         memory: 1GB
-  #   restart: unless-stopped
+  # PostgreSQL Database
+  postgres:
+    image: postgres:15-alpine
+    container_name: anti-sql-twitter-postgres
+    expose:
+      - "5432"
+    environment:
+      - POSTGRES_DB=anti_sql_twitter
+      - POSTGRES_USER=anti_sql_user
+      - POSTGRES_PASSWORD=anti_sql_password
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      app-network:
+        ipv4_address: 172.20.0.13
+    deploy:
+      resources:
+        limits:
+          cpus: '1.0'
+          memory: 1GB
+    restart: unless-stopped
 
 # ネットワーク設定
 networks:
