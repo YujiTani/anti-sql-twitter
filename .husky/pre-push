@@ -1,1 +1,1 @@
-bun run --bun biome lint .
+bunx lint-staged
