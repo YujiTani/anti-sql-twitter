@@ -1,6 +1,13 @@
 {
   "permissions": {
-    "allow": ["Bash(curl:*)", "Bash(docker-compose:*)", "Bash(docker:*)"],
+    "allow": [
+      "Bash(curl:*)",
+      "Bash(docker-compose:*)",
+      "Bash(docker:*)",
+      "Bash(git add:*)",
+      "Bash(bun run:*)",
+      "Bash(mkdir:*)"
+    ],
     "deny": []
   }
 }
