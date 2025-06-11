@@ -1,8 +1,4 @@
-# Phase 1: 基本構成 (4コンテナ)
-# PostgreSQL統合でフルスタック構成完成
-
 services:
-  # Nginx リバースプロキシ
   nginx:
     image: nginx:alpine
     container_name: anti-sql-twitter-nginx
@@ -23,7 +19,6 @@ services:
           memory: 64M
     restart: unless-stopped
 
-  # Frontend (React + Vite)
   frontend:
     build:
       context: ./frontend
@@ -43,7 +38,6 @@ services:
           memory: 256M
     restart: unless-stopped
 
-  # Backend (Hono API)
   backend:
     build:
       context: ./backend
@@ -67,12 +61,11 @@ services:
           memory: 512M
     restart: unless-stopped
 
-  # PostgreSQL Database
   postgres:
     image: postgres:15-alpine
     container_name: anti-sql-twitter-postgres
     ports:
-      - "5432:5432"  # ローカル開発用のポートマッピング追加
+      - "5432:5432"
     expose:
       - "5432"
     environment:
@@ -91,7 +84,6 @@ services:
           memory: 1GB
     restart: unless-stopped
 
-# ネットワーク設定
 networks:
   app-network:
     driver: bridge
@@ -99,7 +91,6 @@ networks:
       config:
         - subnet: 172.20.0.0/24
 
-# ボリューム設定
 volumes:
   postgres_data:
     driver: local
