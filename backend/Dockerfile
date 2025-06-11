@@ -17,10 +17,10 @@ FROM oven/bun:alpine AS production
 
 WORKDIR /app
 
-COPY package.json bun.lock ./
+COPY package.json ./
 
-# バージョン固定、本番依存関係のみ、詳細ログ
-RUN bun install --frozen-lockfile --production --verbose
+# 本番依存関係のみインストール
+RUN bun install --production
 
 COPY --from=builder /app/dist ./dist
 

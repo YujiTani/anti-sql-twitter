@@ -1,9 +1,10 @@
 {
   "name": "backend",
+  "type": "module",
   "scripts": {
     "dev": "bun run --hot src/main.ts",
     "build": "tsc",
-    "start": "node dist/main.js",
+    "start": "bun dist/main.js",
     "test": "bun run --bun test"
   },
   "dependencies": {
