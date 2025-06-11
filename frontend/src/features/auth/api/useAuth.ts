@@ -1,35 +1,4 @@
-import { useSuspenseQuery } from '@tanstack/react-query'
-import { getSession, getUser } from './auth.repository'
-import { useUserStore } from './user.store'
+// Supabase認証フックは一時的に無効化（将来的にJWT認証に変更予定）
 
-/**
- * セッション情報を取得
- * @returns セッション
- */
-export function useAuth() {
-  const sessionQuery = useSuspenseQuery({
-    queryFn: getSession,
-    queryKey: ['auth', 'session'],
-  })
-
-  return {
-    session: sessionQuery.data,
-  }
-}
-
-/**
- * ログイン中のユーザー情報のみを取得
- * @returns ユーザー
- */
-export function useUser() {
-  const { setUser } = useUserStore()
-  const { data } = useSuspenseQuery({
-    queryFn: getUser,
-    queryKey: ['user'],
-  })
-
-  setUser(data)
-  return {
-    user: data,
-  }
-}
+// 一時的なダミーexport（TypeScriptエラー回避）
+export const placeholder = 'auth-hooks-disabled'

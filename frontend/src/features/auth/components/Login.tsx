@@ -1,3 +1,5 @@
+// Supabase Auth UI は一時的に無効化（将来的にJWT認証に変更予定）
+/*
 import supabase from '@/utils/supabase'
 import { Auth } from '@supabase/auth-ui-react'
 import { ThemeSupa } from '@supabase/auth-ui-shared'
@@ -16,6 +18,15 @@ function Login() {
   }, [session, navigate])
 
   return <Auth supabaseClient={supabase} appearance={{ theme: ThemeSupa }} providers={['google']} />
+}
+*/
+
+function Login() {
+  return (
+    <div className="min-h-screen bg-gray-100 flex items-center justify-center">
+      <h1 className="text-2xl font-bold text-gray-800">Login Page (一時的に無効化中)</h1>
+    </div>
+  )
 }
 
 export default Login
