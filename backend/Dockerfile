@@ -24,6 +24,6 @@ RUN bun install --production
 
 COPY --from=builder /app/dist ./dist
 
-EXPOSE 3000
+EXPOSE 80
 
 CMD ["bun", "start"]
