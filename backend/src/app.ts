@@ -1,6 +1,7 @@
 import { Hono } from 'hono'
 import setErrorHandling from './middlewares/setErrorHandling'
 import { setMiddlewares } from './middlewares/setMiddleware'
+import authRoutes from './routes/auth'
 import os from 'os'
 
 // Appオブジェクトを作成
@@ -9,7 +10,8 @@ function createApp() {
   setMiddlewares(app)
   setErrorHandling(app)
 
-  // ルーティングの設定をする関数を呼ぶ
+  app.route('/api/auth', authRoutes)
+
   // 動作確認用API
   app.get('/api/health', (c) => {
     return c.json({ status: 'ok' })
