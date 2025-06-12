@@ -5,7 +5,7 @@ import { createMiddleware } from 'hono/factory'
 export const corsMiddleware = () => {
   // 環境変数ORIGINが設定されていない場合はエラーで停止
   if (!process.env.ORIGIN) {
-    console.error('❌ 環境変数ORIGINが設定されていません。セキュリティのため必須です。')
+    console.error(' 環境変数ORIGINが設定されていません。セキュリティのため必須です。')
     console.error('例: ORIGIN=http://localhost:3001 (開発環境)')
     console.error('例: ORIGIN=https://your-domain.com (本番環境)')
     throw new Error('Missing required environment variable: ORIGIN')
