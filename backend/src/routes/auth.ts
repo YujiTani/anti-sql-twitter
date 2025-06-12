@@ -15,6 +15,13 @@ const auth = new Hono()
 const JWT_SECRET = process.env.JWT_SECRET || 'your-secret-key'
 const JWT_EXPIRES_IN = '7d'
 
+// JWT Payload型定義
+interface JwtPayload {
+  id: number
+  email: string
+  username: string
+}
+
 // 管理者ユーザー登録
 auth.post('/register', async (c) => {
   try {
@@ -143,7 +150,7 @@ auth.get('/me', async (c) => {
 
     const token = authHeader.substring(7)
 
-    const decoded = Number(verify(token, JWT_SECRET))
+    const decoded = verify(token, JWT_SECRET) as JwtPayload
 
     // 認証ユーザー情報取得（Raw SQL - 意図的に非効率なJOIN・サブクエリを含む）
     const adminUser = await prisma.$queryRaw`
