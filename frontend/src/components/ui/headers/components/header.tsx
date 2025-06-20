@@ -1,4 +1,3 @@
-import QuestPoint from './quest-point'
 import User from './user'
 
 function Header() {
@@ -11,7 +10,6 @@ function Header() {
               <User />
             </div>
           </div>
-          <QuestPoint />
         </div>
       </div>
     </header>
