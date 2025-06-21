@@ -7,12 +7,14 @@
 ## ⚙️ バックエンド技術スタック
 
 ### 核となる技術
+
 - **Hono**: 軽量・高速WebAPIフレームワーク
 - **TypeScript**: 型安全なサーバーサイド開発
 - **Bun**: 高速ランタイム・パッケージマネージャー
 - **PostgreSQL**: メインデータベース（Supabase）
 
 ### データベース・ORM
+
 - **Prisma**: スキーマ管理・マイグレーション
 - **Raw SQL方針**: クエリビルダー不使用、SQL直書き
 - **意図的非効率化**: SQLパフォーマンス学習のため
@@ -20,6 +22,7 @@
 ## 🏗️ アーキテクチャ・ディレクトリ構成
 
 ### ディレクトリ構造
+
 ```
 src/
 ├── app.ts              # Honoアプリケーション設定
@@ -39,6 +42,7 @@ src/
 ```
 
 ### 設計原則
+
 - **ミドルウェアパターン**: 横断的関心事の分離
 - **機能別ルート**: `/routes/` で機能ごとにAPI分割
 - **型安全性**: TypeScriptによる厳格な型チェック
@@ -48,6 +52,7 @@ src/
 ### TypeScript規約
 
 #### インポート拡張子ルール
+
 ```typescript
 // ✅ 正しい（拡張子なし）
 import { corsMiddleware } from './corsMiddleware'
@@ -61,6 +66,7 @@ import { authMiddleware } from '../middlewares/authMiddleware.ts'
 **理由**: Bunランタイムが拡張子なしインポートをサポートし、TypeScript標準の書き方を維持
 
 #### 型定義の配置
+
 - **エラー型**: `/types/errorTypes.ts`
 - **API型**: バックエンド独自定義、フロントエンドと同期
 - **ミドルウェア型**: 各ミドルウェアファイル内で定義
@@ -68,6 +74,7 @@ import { authMiddleware } from '../middlewares/authMiddleware.ts'
 ### API設計規約
 
 #### RESTful API設計
+
 ```typescript
 // ✅ 正しいAPI設計
 app.get('/api/users/:id', getUserHandler)           // 取得
@@ -80,6 +87,7 @@ app.get('/api/users/:id/tweets', getUserTweetsHandler)
 ```
 
 #### レスポンス形式の統一
+
 ```typescript
 // ✅ 成功レスポンス
 return c.json({
@@ -94,6 +102,7 @@ return createErrorResponse(c, error, HTTP_STATUS.BAD_REQUEST, 'バリデーシ�
 ### 認証・セキュリティ規約
 
 #### JWT認証実装
+
 ```typescript
 // ✅ JWT payload型定義
 interface JwtPayload {
@@ -113,6 +122,7 @@ app.get('/api/protected/profile', (c) => {
 ```
 
 #### パスワードハッシュ化
+
 ```typescript
 // ✅ Bunのパスワード機能使用
 const passwordHash = await Bun.password.hash(password)
@@ -122,6 +132,7 @@ const isValid = await Bun.password.verify(password, passwordHash)
 ### エラーハンドリング規約
 
 #### 統一エラーレスポンス
+
 ```typescript
 import { HTTP_STATUS, createErrorResponse } from '../types/errorTypes'
 
@@ -138,6 +149,7 @@ return createErrorResponse(c, error, {
 ```
 
 #### エラー型定義
+
 ```typescript
 // ✅ アプリケーション専用エラー型
 export type ErrorStatusCode = 400 | 401 | 403 | 404 | 409 | 500
@@ -155,11 +167,13 @@ export const HTTP_STATUS = {
 ## 🗃️ データベース・Prisma運用
 
 ### Prisma使用方針
+
 - **永続化処理**: Prismaを使用
 - **クエリ記述**: SQLを直接記述（Raw SQL）
 - **目的**: SQLパフォーマンス学習のため
 
 #### Raw SQL実装パターン
+
 ```typescript
 // ✅ Raw SQLでの実装
 const users = await prisma.$queryRaw`
@@ -186,6 +200,7 @@ const userWithVirtualUsers = await prisma.$queryRaw`
 ```
 
 #### データベーススキーマ管理
+
 ```bash
 # スキーマ変更をデータベースに反映
 bun run db:push
@@ -200,6 +215,7 @@ bunx prisma generate
 ### パフォーマンス学習要素の実装
 
 #### 意図的なアンチパターン
+
 ```typescript
 // ❌ N+1問題（学習用）
 const tweets = await prisma.$queryRaw`SELECT * FROM tweets LIMIT 100`
@@ -220,6 +236,7 @@ const searchResults = await prisma.$queryRaw`
 ## 🚀 開発コマンド
 
 ### 日常開発コマンド
+
 ```bash
 # 開発サーバー（ホットリロード）
 bun run dev
@@ -235,6 +252,7 @@ bun run test
 ```
 
 ### データベース操作
+
 ```bash
 # スキーマをデータベースに反映
 bun run db:push
@@ -249,6 +267,7 @@ bunx prisma studio
 ## 🔒 セキュリティ・認証
 
 ### セキュリティミドルウェア
+
 ```typescript
 // ✅ セキュリティヘッダー設定
 app.use('*', secureHeadersMiddleware)
@@ -261,6 +280,7 @@ app.use('*', requestLoggerMiddleware)
 ```
 
 ### 環境変数管理
+
 ```typescript
 // ✅ 環境変数の型安全な取得
 const JWT_SECRET = process.env.JWT_SECRET || 'development-only-secret'
@@ -271,6 +291,7 @@ console.log('JWT_SECRET:', JWT_SECRET) // 絶対にNG
 ```
 
 ### 認証フロー
+
 1. **ユーザー登録**: メール・ユーザー名・パスワード
 2. **パスワードハッシュ化**: Bun.password.hash()
 3. **JWT発行**: ログイン時にトークン生成
@@ -280,6 +301,7 @@ console.log('JWT_SECRET:', JWT_SECRET) // 絶対にNG
 ## 🧪 テスト規約
 
 ### テストファイル配置
+
 ```
 src/
 ├── routes/
@@ -291,6 +313,7 @@ src/
 ```
 
 ### API テストパターン
+
 ```typescript
 // ✅ API エンドポイントテスト
 import { testClient } from 'hono/testing'
@@ -319,6 +342,7 @@ describe('認証API', () => {
 ## 📊 パフォーマンス監視
 
 ### ログ・監視実装
+
 ```typescript
 // ✅ パフォーマンス計測
 export const performanceMiddleware = async (c: Context, next: Next) => {
@@ -342,10 +366,12 @@ console.log(`[DB] クエリ実行時間: ${queryTime}ms`)
 <!-- バックエンド固有の標準ルールはここに自動追加されます -->
 
 ### エラーハンドリング規約
+
 - **統一エラー型定義**: HTTP_STATUSとErrorStatusCode型による型安全なエラーレスポンス
 - **カスタムエラーメッセージ対応**: statusInfoオブジェクトによる柔軟なメッセージ設定
 
 ### JWT認証セキュリティルール
+
 - **リフレッシュトークンHttpOnly Cookie**: リフレッシュトークンは必ずHttpOnly Cookieで管理
 - **セキュアCookie設定**: `httpOnly: true`, `secure: true`（本番）, `sameSite: 'strict'`を必須設定
 - **トークン分離**: アクセストークン（短期・メモリ）とリフレッシュトークン（長期・Cookie）の適切な分離

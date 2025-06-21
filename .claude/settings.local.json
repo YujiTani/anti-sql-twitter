@@ -7,7 +7,8 @@
       "Bash(git add:*)",
       "Bash(bun run:*)",
       "Bash(mkdir:*)",
-      "Bash(osascript:*)"
+      "Bash(osascript:*)",
+      "Bash(bun add:*)"
     ],
     "deny": []
   }

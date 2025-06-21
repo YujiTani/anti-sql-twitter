@@ -7,12 +7,14 @@
 ## 🎨 フロントエンド技術スタック
 
 ### 核となる技術
+
 - **React 18**: コンポーネントベース開発
 - **TypeScript**: 型安全性の確保
 - **Vite**: 高速開発サーバー・ビルドツール
 - **Tailwind CSS**: ユーティリティファーストCSS
 
 ### 状態管理
+
 - **Jotai**: アトミックな状態管理（ローカル状態）
 - **TanStack Query**: サーバー状態・キャッシュ管理
 - **React Router**: ルーティング
@@ -20,6 +22,7 @@
 ## 🏗️ アーキテクチャ・ディレクトリ構成
 
 ### ディレクトリ構造
+
 ```
 src/
 ├── api/                 # API通信クライアント
@@ -41,6 +44,7 @@ src/
 ```
 
 ### 設計原則
+
 - **機能別ディレクトリ**: `/features/` 配下で機能をカプセル化
 - **共通コンポーネント**: `/components/ui/` で再利用可能コンポーネント
 - **カスタムフック**: ロジックの分離と再利用性
@@ -50,6 +54,7 @@ src/
 ### TypeScript規約
 
 #### インポート拡張子ルール
+
 ```typescript
 // ✅ 正しい（拡張子なし）
 import { Component } from './Component'
@@ -61,6 +66,7 @@ import { useAuth } from '../hooks/useAuth.ts'
 ```
 
 #### 型定義の場所
+
 - **コンポーネント用型**: 同じファイル内で定義
 - **共通型**: `/types/` ディレクトリで管理
 - **API型**: バックエンドと同期
@@ -68,6 +74,7 @@ import { useAuth } from '../hooks/useAuth.ts'
 ### コンポーネント設計規約
 
 #### 命名規則
+
 ```typescript
 // ✅ 正しいコンポーネント命名
 export default function UserProfile() { }
@@ -80,6 +87,7 @@ useUserProfile.ts
 ```
 
 #### props型定義
+
 ```typescript
 // ✅ 正しいprops定義
 interface UserProfileProps {
@@ -96,6 +104,7 @@ export default function UserProfile({ userId, className, onEdit }: UserProfilePr
 ### 状態管理規約
 
 #### Jotai使用パターン
+
 ```typescript
 // ✅ アトム定義
 import { atom } from 'jotai'
@@ -111,6 +120,7 @@ export const userNameAtom = atom((get) => {
 ```
 
 #### TanStack Query使用パターン
+
 ```typescript
 // ✅ API取得フック
 export function useUserProfile(userId: string) {
@@ -137,6 +147,7 @@ export function useUpdateUser() {
 ### CSS・スタイリング規約
 
 #### Tailwind CSS使用方針
+
 ```tsx
 // ✅ レスポンシブ対応
 <div className="flex flex-col md:flex-row gap-4 p-4">
@@ -149,6 +160,7 @@ export function useUpdateUser() {
 ```
 
 #### コンポーネント共通スタイル
+
 ```typescript
 // ✅ スタイル用のユーティリティ関数
 export const buttonStyles = {
@@ -161,6 +173,7 @@ export const buttonStyles = {
 ## 🚀 開発コマンド
 
 ### 日常開発コマンド
+
 ```bash
 # 開発サーバー起動
 bun run dev
@@ -176,6 +189,7 @@ bun run start
 ```
 
 ### デバッグ・テスト
+
 ```bash
 # テスト実行
 bun run test
@@ -190,11 +204,13 @@ bun run test:coverage
 ## 📱 UI/UX ガイドライン
 
 ### レスポンシブ対応
+
 - **モバイルファースト**: 最小画面から設計
 - **ブレークポイント**: Tailwindのデフォルト（sm, md, lg, xl, 2xl）
 - **タッチ対応**: ボタンサイズ44px以上
 
 ### アクセシビリティ
+
 ```tsx
 // ✅ 適切なaria属性
 <button 
@@ -214,6 +230,7 @@ bun run test:coverage
 ```
 
 ### パフォーマンス最適化
+
 - **React.memo**: 不要な再レンダリング防止
 - **useMemo/useCallback**: 計算結果・関数のメモ化
 - **Code Splitting**: 機能別の遅延読み込み
@@ -221,6 +238,7 @@ bun run test:coverage
 ## 🔗 API通信
 
 ### API Client使用
+
 ```typescript
 // ✅ 一元化APIクライアント使用
 import { apiClient } from '@/api/api-client'
@@ -235,6 +253,7 @@ const newUser = await apiClient.createUser(userData)
 ```
 
 ### エラーハンドリング
+
 ```typescript
 // ✅ TanStack Queryでのエラーハンドリング
 export function useUserProfile(userId: string) {
@@ -253,6 +272,7 @@ export function useUserProfile(userId: string) {
 ## 🧪 テスト規約
 
 ### テストファイル配置
+
 ```
 src/
 ├── components/
@@ -264,6 +284,7 @@ src/
 ```
 
 ### テスト記述パターン
+
 ```typescript
 // ✅ コンポーネントテスト
 import { render, screen } from '@testing-library/react'
