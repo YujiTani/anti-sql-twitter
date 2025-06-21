@@ -21,31 +21,33 @@
 1. 必ず該当ディレクトリのCLAUDE.mdを参照する
 2. 共通ルールはこのファイル、専門ルールは各ディレクトリのファイルを確認
 3. ルール追加時は適切なファイルに記録する
+4. タスクが完了 or 私に確認が必要なことは以下のコマンドを実行する
+※ message 部分は `タスク完了` or `相談したい内容があります` のどちらかに書き換えて実行すること 
+```sh
+osascript -e 'display notification message with title "Claude AI"'
+``````
 
-### 🔄 改善されたルール自動追加システム
-「今回限りではなく常に適用が必要」と思われる指示を受けた場合：
+### 📝 ルール管理システム
+重要な指示や制約を標準ルールとして管理するための実用的システム：
 
-#### 1. 自動判定フェーズ
-指示内容から適用対象を自動判定：
-- **プロジェクト全体・Docker・Git** → `/CLAUDE.md`
-- **React・UI・状態管理** → `/frontend/CLAUDE.md`
-- **API・DB・認証・型定義** → `/backend/CLAUDE.md`
+#### ルール追加の判断基準
+以下のような指示を受けた場合、標準ルール化が有効：
+- 繰り返し発生する可能性が高い作業手順
+- プロジェクト全体に影響する制約や決まり事
+- セキュリティ・品質に関わる必須事項
+- 開発効率に大きく影響する作業ルール
 
-#### 2. 確認フェーズ
-```
-💡 新しいルールを検出しました
+#### ルール追加先の選択
+- **プロジェクト全体・Docker・Git・モノレポ管理** → `/CLAUDE.md`
+- **React・UI・状態管理・ビルド・テスト** → `/frontend/CLAUDE.md`  
+- **API・データベース・認証・サーバー・型定義** → `/backend/CLAUDE.md`
 
-対象: [ルート/フロントエンド/バックエンド]
-内容: [ルール内容の要約]
-
-標準ルールとして追加しますか？ (YES/NO)
-```
-
-#### 3. 適用フェーズ（「YES」の回答時）
-- 適切なCLAUDE.mdファイルに自動追記
-- カテゴリー別に整理して追加
-- 指示内容と説明を明記
-- 以降すべての作業で標準ルールとして適用
+#### 新ルール追加の手順
+1. **重要度確認**: 一回限りでない、継続的に必要なルールか判断
+2. **対象ファイル特定**: 上記基準に従って適切なCLAUDE.mdを選択
+3. **既存ルール確認**: 重複や矛盾がないかチェック
+4. **ルール記述**: 条件・手順・理由を明確に記載
+5. **履歴記録**: ファイル末尾の「標準ルール追加履歴」に記録
 
 ## 📋 プロジェクト概要
 
@@ -138,7 +140,7 @@ Co-Authored-By: Claude <noreply@anthropic.com>
 - 環境変数・秘密鍵は絶対にコミット禁止
 - 設定ファイルには例・ダミー値のみ
 
-## 🚀 共通開発コマンド
+## 🚀 開発コマンド
 
 ### モノレポ全体
 ```bash
@@ -146,7 +148,7 @@ Co-Authored-By: Claude <noreply@anthropic.com>
 bun run format
 
 # フォーマットチェック
-bun run format:check  
+bun run format:check
 
 # リント
 bun run lint
@@ -156,6 +158,68 @@ bun run lint:fix
 
 # 全チェック・修正
 bun run check:fix
+```
+
+### フロントエンド開発
+```bash
+# 開発サーバー起動
+cd frontend
+bun run dev
+
+# ビルド
+bun run build
+
+# プレビュー
+bun run preview
+
+# テスト実行
+bun test
+
+# 型チェック
+bun run type-check
+```
+
+### バックエンド開発
+```bash
+# 開発サーバー起動
+cd backend
+bun run dev
+
+# ビルド
+bun run build
+
+# 本番起動
+bun start
+
+# テスト実行
+bun test
+
+# データベース操作
+bun run db:generate  # Prismaクライアント生成
+bun run db:push      # スキーマ反映
+bun run db:migrate   # マイグレーション実行
+bun run db:studio    # Prisma Studio起動
+```
+
+### Docker環境
+```bash
+# 全サービス起動
+docker-compose up -d
+
+# ログ確認
+docker-compose logs -f
+
+# 特定サービスのログ
+docker-compose logs -f [service-name]
+
+# サービス停止・削除
+docker-compose down
+
+# ボリューム含めて削除
+docker-compose down -v
+
+# リビルド
+docker-compose build --no-cache
 ```
 
 ## 📊 コード品質・テスト
@@ -190,30 +254,9 @@ bun run check:fix
 - **ポートマッピング変更禁止**: docker-compose.ymlのポート設定変更を禁止し、プロセス停止での対応を義務化
 - **動作確認後のクリーンアップ**: Docker Compose動作確認後の`docker-compose down`実行を必須化
 
-# CLAUDE.md
+### エラーメッセージ統一ルール
+- **日本語メッセージ統一**: すべてのエラーメッセージ・通知メッセージは日本語で統一すること
+- **ユーザビリティ重視**: 技術的詳細ではなく、ユーザーが理解しやすい表現を使用
+- **一貫性維持**: 同じ種類のエラーは同じメッセージ形式を使用（例：「〇〇に失敗しました」）
 
-## 設計
-
-### モデル
-
-### アプリケーション
-
-### システム
-#### 開発コマンド
-
-#### セットアップ手順
-
-#### フレームワーク
-
-#### スタイリング
-
-#### 言語
-
-#### DB
-
-#### SMTP
-
-#### 認証
-
-#### 開発方針
 

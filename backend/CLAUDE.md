@@ -344,3 +344,9 @@ console.log(`[DB] クエリ実行時間: ${queryTime}ms`)
 ### エラーハンドリング規約
 - **統一エラー型定義**: HTTP_STATUSとErrorStatusCode型による型安全なエラーレスポンス
 - **カスタムエラーメッセージ対応**: statusInfoオブジェクトによる柔軟なメッセージ設定
+
+### JWT認証セキュリティルール
+- **リフレッシュトークンHttpOnly Cookie**: リフレッシュトークンは必ずHttpOnly Cookieで管理
+- **セキュアCookie設定**: `httpOnly: true`, `secure: true`（本番）, `sameSite: 'strict'`を必須設定
+- **トークン分離**: アクセストークン（短期・メモリ）とリフレッシュトークン（長期・Cookie）の適切な分離
+- **認証ログ出力**: 認証成功・失敗時のログ出力を必須化（セキュリティ監査用）

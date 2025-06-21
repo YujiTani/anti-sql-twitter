@@ -6,7 +6,8 @@
       "Bash(docker:*)",
       "Bash(git add:*)",
       "Bash(bun run:*)",
-      "Bash(mkdir:*)"
+      "Bash(mkdir:*)",
+      "Bash(osascript:*)"
     ],
     "deny": []
   }
