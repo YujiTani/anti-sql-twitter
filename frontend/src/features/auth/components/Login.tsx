@@ -1,30 +1,95 @@
-// Supabase Auth UI は一時的に無効化（将来的にJWT認証に変更予定）
-/*
-import supabase from '@/utils/supabase'
-import { Auth } from '@supabase/auth-ui-react'
-import { ThemeSupa } from '@supabase/auth-ui-shared'
-import { useEffect } from 'react'
+import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useAuth } from '../api/useAuth'
 
 function Login() {
-  const { session } = useAuth()
+  const [formData, setFormData] = useState({
+    email: '',
+    password: '',
+  })
   const navigate = useNavigate()
+  const { login, isLoginLoading } = useAuth()
 
-  useEffect(() => {
-    if (session) {
-      navigate('/home')
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault()
+
+    try {
+      await login(formData)
+      navigate('/mypage')
+    } catch (error: any) {
+      // エラーはuseAuthでトースト通知される
     }
-  }, [session, navigate])
+  }
 
-  return <Auth supabaseClient={supabase} appearance={{ theme: ThemeSupa }} providers={['google']} />
-}
-*/
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setFormData({
+      ...formData,
+      [e.target.name]: e.target.value,
+    })
+  }
 
-function Login() {
   return (
-    <div className="min-h-screen bg-gray-100 flex items-center justify-center">
-      <h1 className="text-2xl font-bold text-gray-800">Login Page (一時的に無効化中)</h1>
+    <div className="min-h-screen bg-gray-100 flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
+      <div className="max-w-md w-full space-y-8">
+        <div>
+          <h2 className="mt-6 text-center text-3xl font-extrabold text-gray-900">ログイン</h2>
+          <p className="mt-2 text-center text-sm text-gray-600">
+            または{' '}
+            <button
+              onClick={() => navigate('/register')}
+              className="font-medium text-indigo-600 hover:text-indigo-500"
+            >
+              新規アカウント作成
+            </button>
+          </p>
+        </div>
+        <form className="mt-8 space-y-6" onSubmit={handleSubmit}>
+          <div className="rounded-md shadow-sm -space-y-px">
+            <div>
+              <label htmlFor="email" className="sr-only">
+                メールアドレス
+              </label>
+              <input
+                id="email"
+                name="email"
+                type="email"
+                autoComplete="email"
+                required
+                className="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-t-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
+                placeholder="メールアドレス"
+                value={formData.email}
+                onChange={handleChange}
+              />
+            </div>
+            <div>
+              <label htmlFor="password" className="sr-only">
+                パスワード
+              </label>
+              <input
+                id="password"
+                name="password"
+                type="password"
+                autoComplete="current-password"
+                required
+                className="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-b-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
+                placeholder="パスワード"
+                value={formData.password}
+                onChange={handleChange}
+              />
+            </div>
+          </div>
+
+          <div>
+            <button
+              type="submit"
+              disabled={isLoginLoading}
+              className="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 disabled:opacity-50 disabled:cursor-not-allowed"
+            >
+              {isLoginLoading ? 'ログイン中...' : 'ログイン'}
+            </button>
+          </div>
+        </form>
+      </div>
     </div>
   )
 }
