@@ -1,31 +1,22 @@
-// Supabase関連は一時的に無効化（将来的にJWT認証に変更予定）
-/*
-import { User } from '@supabase/supabase-js'
-import { atom, useAtom } from 'jotai'
+import { atom } from 'jotai'
 
-export type UserStore = {
-  user: User | null
-  setUser: (user: User) => void
+// ユーザー型定義
+export interface User {
+  id: number
+  email: string
+  username: string
+  created_at: string
+  virtual_users?: Array<{
+    id: number
+    name: string
+    personality: string
+    totalTweets: number
+    totalFollowers: number
+    totalFollowing: number
+  }>
 }
 
-const userAtom = atom<User | null>(null)
-const setUserAtom = atom(
-  (get) => get(userAtom),
-  (get, set, user: User) => {
-    set(userAtom, user)
-  }
-)
-
-export function useUserStore(): UserStore {
-  const [user] = useAtom(userAtom)
-  const [, setUser] = useAtom(setUserAtom)
-
-  return {
-    user,
-    setUser,
-  }
-}
-*/
-
-// 一時的なダミーexport（TypeScriptエラー回避）
-export const placeholder = 'user-store-disabled'
+// 認証状態の管理
+export const userAtom = atom<User | null>(null)
+export const isAuthenticatedAtom = atom<boolean>((get) => get(userAtom) !== null)
+export const isLoadingAtom = atom<boolean>(false)
